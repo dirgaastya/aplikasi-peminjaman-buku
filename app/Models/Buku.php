@@ -21,8 +21,8 @@ class Buku extends Model
         'title',
         'qty',
         'year',
-        'pengarang_id',
-        'penerbit_id',
+        'penerbit',
+        'pengarang',
         'rak_id'
     ];
 }
