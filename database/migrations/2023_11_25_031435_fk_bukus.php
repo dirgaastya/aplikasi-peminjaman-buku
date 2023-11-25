@@ -16,8 +16,8 @@ return new class extends Migration
             $table->foreign('pengarang_id', 'fk_buku_pengarang_id')->references('id')->on('pengarangs')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->string('penerbit_id', 8);
             $table->foreign('penerbit_id', 'fk_buku_penerbit_id')->references('id')->on('penerbits')->onUpdate('CASCADE')->onDelete('CASCADE');
-            $table->string('rak_id', 8);
-            $table->foreign('rak_id', 'fk_buku_rak_id')->references('id')->on('raks')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->string('rak_id', 4);
+            $table->foreign('rak_id', 'fk_buku_rak_id')->references('kode_rak')->on('raks')->onUpdate('CASCADE')->onDelete('CASCADE');
         });
     }
 

@@ -9,7 +9,7 @@ class Rak extends Model
 {
     use HasFactory;
     protected $table = 'raks';
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'kode_rak';
     public $incrementing = false;
     /**
      * The attributes that are mass assignable.
