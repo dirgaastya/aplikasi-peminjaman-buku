@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('bukus', function (Blueprint $table) {
             $table->string('id',8)->primary();
             $table->string('title');
+            $table->string('penerbit');
+            $table->string('pengarang');
             $table->integer('qty');
             $table->integer('year');
             $table->timestamps();
