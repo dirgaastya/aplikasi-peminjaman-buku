@@ -1,10 +1,11 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import Breadcrumbs from "@/Components/Breadcrumbs.vue";
-import { Head, Link } from "@inertiajs/vue3";
+import { Head, Link, useForm } from "@inertiajs/vue3";
 import VDataTable from "@morpheme/table";
 import { ref } from "vue";
 
+const form = useForm({});
 const search = ref("");
 const headers = ref([
   {
@@ -43,6 +44,10 @@ const breadcrumbsItems = ref([
 defineProps({
   books: Array,
 });
+
+const handleDelete = (id) => {
+  form.delete(route("buku.destroy", id));
+};
 </script>
 
 <template>
@@ -79,7 +84,9 @@ defineProps({
             >
               <template #item.action="{item}">
                 <div class="flex items-center gap-x-3">
-                  <VIcon name="tabler:trash" class="text-red-500" />
+                  <VBtn icon fab @click="handleDelete(item.id)">
+                    <VIcon name="tabler:trash" class="text-red-500" />
+                  </VBtn>
                   <Link :href="route('buku.edit', item.id)">
                     <VIcon name="raphael:edit" class="text-cyan-500" />
                   </Link>
