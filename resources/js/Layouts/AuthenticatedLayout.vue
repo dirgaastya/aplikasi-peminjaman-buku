@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { breakpointsTailwind, useBreakpoints } from "@vueuse/core";
 import { ref, watchEffect } from "vue";
-import NavDrawerItems from "@/Components/NavItems.vue";
+import NavLink from "@/Components/NavLink.vue";
 import { NavDrawer } from "@morpheme/nav-drawer";
 import Dropdown from "@/Components/Dropdown.vue";
 import DropdownLink from "@/Components/DropdownLink.vue";
@@ -10,6 +10,25 @@ const breakpoints = useBreakpoints(breakpointsTailwind);
 const isMobile = breakpoints.smaller("sm"); // only smaller than lg
 const isAsideOpen = ref(true);
 const isMini = ref(false);
+
+const menus = ref([
+  {
+    title: "Home",
+    to: "dashboard",
+    prependIcon: "ri:home-2-line",
+  },
+  {
+    title: "Master Data",
+    prependIcon: "carbon:data-base",
+    items: [
+      {
+        title: "Buku",
+        to: "buku.index",
+        prependIcon: "ri:book-line",
+      },
+    ],
+  },
+]);
 
 watchEffect(() => {
   isAsideOpen.value = !isMobile.value;
@@ -63,6 +82,9 @@ watchEffect(() => {
           </div>
         </div>
       </VAppBar>
+      <div class="px-6 lg:px-8" v-if="$slots.breadcrumbs">
+        <slot name="breadcrumbs" />
+      </div>
     </template>
     <!-- aside -->
     <template #aside>
@@ -83,7 +105,51 @@ watchEffect(() => {
         >
           <VText font-weight="semibold" variant="display-xs">Logo</VText>
         </div>
-        <NavDrawerItems />
+        <VList>
+          <template v-for="menu in menus" :key="menu.text">
+            <VListCollapse v-if="menu.items">
+              <template #activator="{ isOpen, toggle }">
+                <VListItem
+                  v-bind="menu"
+                  :class="isMini ? 'justify-center' : ''"
+                  :hide-text="isMini"
+                  :hide-append="isMini"
+                  append-icon="ri:arrow-down-s-line"
+                  :append-icon-class="isOpen ? 'rotate-180' : ''"
+                  @click="toggle"
+                >
+                  {{ menu.title }}
+                </VListItem>
+              </template>
+              <VList>
+                <VListItem
+                  v-for="child in menu.items"
+                  :key="child.title"
+                  v-bind="child"
+                  :class="isMini ? 'justify-center' : ''"
+                  :hide-text="isMini"
+                  :hide-append="isMini"
+                >
+                  <NavLink
+                    :href="route(child.to)"
+                    :active="route().current(child.to)"
+                  >
+                    {{ child.title }}
+                  </NavLink>
+                </VListItem>
+              </VList>
+            </VListCollapse>
+            <VListItem
+              v-else
+              v-bind="menu"
+              :class="isMini ? 'justify-center' : ''"
+              :hide-text="isMini"
+              :hide-append="isMini"
+            >
+              {{ menu.title }}
+            </VListItem>
+          </template>
+        </VList>
       </NavDrawer>
     </template>
 
