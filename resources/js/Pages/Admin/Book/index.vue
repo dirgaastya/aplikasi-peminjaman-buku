@@ -34,8 +34,6 @@ const headers = ref([
 const props = defineProps({
   books: Array,
 });
-
-console.log(props.books);
 </script>
 
 <template>
@@ -51,9 +49,7 @@ console.log(props.books);
     <div class="py-12">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-          <div
-            class="bg-emerald-300 flex items-center justify-between p-3 px-6"
-          >
+          <div class="bg-sky-300 flex items-center justify-between p-3 px-6">
             <h2 class="font-semibold text-xl text-white leading-tight">
               List Buku
             </h2>
