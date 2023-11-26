@@ -26,7 +26,7 @@ class BukuController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Admin/Book/form',);
     }
 
     /**
@@ -50,7 +50,7 @@ class BukuController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        return Inertia::render('Admin/Book/form',['id' => $id]);
     }
 
     /**

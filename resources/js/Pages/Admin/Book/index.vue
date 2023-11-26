@@ -1,5 +1,6 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import Breadcrumbs from "@/Components/Breadcrumbs.vue";
 import { Head, Link } from "@inertiajs/vue3";
 import VDataTable from "@morpheme/table";
 import { ref } from "vue";
@@ -31,7 +32,15 @@ const headers = ref([
     text: "Action",
   },
 ]);
-const props = defineProps({
+
+const breadcrumbsItems = ref([
+  {
+    title: "Buku",
+    to: "buku.index",
+  },
+]);
+
+defineProps({
   books: Array,
 });
 </script>
@@ -40,20 +49,18 @@ const props = defineProps({
   <Head title="Dashboard" />
 
   <AuthenticatedLayout>
-    <!-- <template #header>
-      <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-        List Buku
-      </h2>
-    </template> -->
+    <template #breadcrumbs>
+      <Breadcrumbs :items="breadcrumbsItems" />
+    </template>
 
-    <div class="py-12">
+    <div class="py-6">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
           <div class="bg-sky-300 flex items-center justify-between p-3 px-6">
             <h2 class="font-semibold text-xl text-white leading-tight">
               List Buku
             </h2>
-            <Link href="/">
+            <Link :href="route('buku.create')">
               <VIcon name="ic:baseline-plus" class="text-white" />
             </Link>
           </div>
@@ -70,10 +77,12 @@ const props = defineProps({
               :headers="headers"
               v-model:search="search"
             >
-              <template #item.action>
+              <template #item.action="{item}">
                 <div class="flex items-center gap-x-3">
                   <VIcon name="tabler:trash" class="text-red-500" />
-                  <VIcon name="raphael:edit" class="text-cyan-500" />
+                  <Link :href="route('buku.edit', item.id)">
+                    <VIcon name="raphael:edit" class="text-cyan-500" />
+                  </Link>
                 </div>
               </template>
             </VDataTable>
