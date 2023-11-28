@@ -14,16 +14,12 @@ const headers = ref([
     text: "ID",
   },
   {
-    value: "title",
-    text: "Judul Buku",
+    value: "kode_rak",
+    text: "Kode Rak",
   },
   {
-    value: "penerbit",
-    text: "Penerbit",
-  },
-  {
-    value: "pengarang",
-    text: "Pengarang",
+    value: "lokasi",
+    text: "Lokasi",
   },
   {
     value: "updated_at",
@@ -37,17 +33,17 @@ const headers = ref([
 
 const breadcrumbsItems = ref([
   {
-    title: "Buku",
-    to: "buku.index",
+    title: "Rak",
+    to: "rak.index",
   },
 ]);
 
 defineProps({
-  books: Array,
+  raks: Array,
 });
 
 const handleDelete = (id) => {
-  form.delete(route("buku.destroy", id));
+  form.delete(route("rak.destroy", id));
 };
 </script>
 
@@ -64,9 +60,9 @@ const handleDelete = (id) => {
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
           <div class="bg-sky-300 flex items-center justify-between p-3 px-6">
             <h2 class="font-semibold text-xl text-white leading-tight">
-              List Buku
+              List Rak
             </h2>
-            <Link :href="route('buku.create')">
+            <Link :href="route('rak.create')">
               <VIcon name="ic:baseline-plus" class="text-white" />
             </Link>
           </div>
@@ -79,7 +75,7 @@ const handleDelete = (id) => {
             />
             <VDataTable
               striped
-              :items="books"
+              :items="raks"
               :headers="headers"
               v-model:search="search"
             >
@@ -88,10 +84,10 @@ const handleDelete = (id) => {
               </template>
               <template #item.action="{item}">
                 <div class="flex items-center gap-x-3">
-                  <VBtn icon fab text @click="handleDelete(item.id)">
+                  <VBtn icon fab text @click="handleDelete(item.kode_rak)">
                     <VIcon name="tabler:trash" class="text-red-500" />
                   </VBtn>
-                  <Link :href="route('buku.edit', item.id)">
+                  <Link :href="route('rak.edit', item.kode_rak)">
                     <VIcon name="raphael:edit" class="text-cyan-500" />
                   </Link>
                 </div>
