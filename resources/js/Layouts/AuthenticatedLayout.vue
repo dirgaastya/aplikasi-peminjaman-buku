@@ -26,6 +26,11 @@ const menus = ref([
         to: "buku.index",
         prependIcon: "ri:book-line",
       },
+      {
+        title: "Rak",
+        to: "rak.index",
+        prependIcon: "game-icons:bookshelf",
+      },
     ],
   },
 ]);
