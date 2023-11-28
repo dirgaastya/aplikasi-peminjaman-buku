@@ -25,6 +25,7 @@
         "@morpheme/themes": "1.0.0-rc.4",
         "@morpheme/ui": "1.0.0-rc.7",
         "@vueuse/core": "^10.6.1",
+        "moment": "^2.29.4",
         "sass": "^1.69.5"
     }
 }
