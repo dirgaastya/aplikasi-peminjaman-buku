@@ -1,11 +1,14 @@
 <?php
 
-use App\Http\Controllers\BukuController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\RakController;
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Application;
+use App\Http\Controllers\RakController;
+use App\Http\Controllers\BukuController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\StaffController;
+use App\Http\Controllers\MemberController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +41,9 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('buku', BukuController::class);
     Route::resource('rak', RakController::class);
+    Route::resource('role', RoleController::class);
+    Route::resource('staff', StaffController::class);
+    Route::resource('member', MemberController::class);
 });
 
 require __DIR__.'/auth.php';
