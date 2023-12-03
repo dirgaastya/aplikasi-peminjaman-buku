@@ -18,6 +18,27 @@ const menus = ref([
     prependIcon: "ri:home-2-line",
   },
   {
+    title: "User Management",
+    prependIcon: "clarity:users-solid",
+    items: [
+      {
+        title: "Role",
+        to: "role.index",
+        prependIcon: "fa6-solid:user-lock",
+      },
+      {
+        title: "Staff",
+        to: "staff.index",
+        prependIcon: "uim:user-md",
+      },
+      {
+        title: "Member",
+        to: "member.index",
+        prependIcon: "fa:user",
+      },
+    ],
+  },
+  {
     title: "Master Data",
     prependIcon: "carbon:data-base",
     items: [
@@ -41,7 +62,7 @@ watchEffect(() => {
 </script>
 
 <template>
-  <VAppShell class="bg-gray-50">
+  <VAppShell fluid class="bg-gray-50">
     <!-- header -->
 
     <template #navigation>
