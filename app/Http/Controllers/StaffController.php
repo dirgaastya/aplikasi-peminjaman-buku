@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Inertia\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Haruncpi\LaravelIdGenerator\IdGenerator;
 
 class StaffController extends Controller
 {
@@ -24,7 +28,8 @@ class StaffController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Admin/Staff/form');
+        $roles = Role::skip(1)->take(2)->get();
+        return Inertia::render('Admin/User/form',['roles' => $roles]);
     }
 
     /**
@@ -32,9 +37,29 @@ class StaffController extends Controller
      */
     public function store(Request $request)
     {
-        User::create($request->all());
+        $staffs = User::where('role_id',2)->get();
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
+            'password' => 'required',
+            'role_id' => 'required',
+        ]);
+
+        $id = IdGenerator::generate(['table' => 'users', 'length' => 8, 'prefix' => 'U' . date('y')]);
+
+        $user = new User([
+            'id' => $id,
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'role_id' => $request->role_id,
+        ]);
+
+        $user->save();
+
         return Inertia::render('Admin/Staff/index', [
-            'roles' => User::all()
+            'staffs' => $staffs,
         ]);
     }
 
@@ -43,6 +68,10 @@ class StaffController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $staff = User::findOrFail($id);
+        $staff->delete();
+        return Inertia::render('Admin/Staff/index', [
+            'staffs' => User::where('role_id',2)->get()
+        ]);
     }
 }
