@@ -39,11 +39,17 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::resource('buku', BukuController::class);
-    Route::resource('rak', RakController::class);
-    Route::resource('role', RoleController::class);
-    Route::resource('staff', StaffController::class);
-    Route::resource('member', MemberController::class);
+    Route::middleware(['checkRole:1,2'])->group(function(){
+        Route::resource('buku', BukuController::class);
+        Route::resource('rak', RakController::class);
+
+        Route::middleware('checkRole:1')->group(function(){
+            Route::resource('role', RoleController::class);
+            Route::resource('staff', StaffController::class);
+            Route::resource('member', MemberController::class);
+        });
+    });
+
 });
 
 require __DIR__.'/auth.php';

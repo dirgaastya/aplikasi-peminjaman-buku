@@ -5,12 +5,14 @@ import NavLink from "@/Components/NavLink.vue";
 import { NavDrawer } from "@morpheme/nav-drawer";
 import Dropdown from "@/Components/Dropdown.vue";
 import DropdownLink from "@/Components/DropdownLink.vue";
+import { usePage } from "@inertiajs/vue3";
 
+const page = usePage();
 const breakpoints = useBreakpoints(breakpointsTailwind);
-const isMobile = breakpoints.smaller("sm"); // only smaller than lg
+const isMobile = breakpoints.smaller("sm");
 const isAsideOpen = ref(true);
 const isMini = ref(false);
-
+const authUser = ref(page.props.auth.user);
 const menus = ref([
   {
     title: "Home",
@@ -19,6 +21,7 @@ const menus = ref([
   },
   {
     title: "User Management",
+    role: [1],
     prependIcon: "clarity:users-solid",
     items: [
       {
@@ -40,6 +43,7 @@ const menus = ref([
   },
   {
     title: "Master Data",
+    role: [1, 2],
     prependIcon: "carbon:data-base",
     items: [
       {
@@ -84,9 +88,7 @@ watchEffect(() => {
                       type="button"
                       class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
                     >
-                      <VAvatar color="primary">{{
-                        $page.props.auth.user.name[0]
-                      }}</VAvatar>
+                      <VAvatar color="primary">{{ authUser.name[0] }}</VAvatar>
                     </button>
                   </span>
                 </template>
@@ -133,47 +135,49 @@ watchEffect(() => {
         </div>
         <VList>
           <template v-for="menu in menus" :key="menu.text">
-            <VListCollapse v-if="menu.items">
-              <template #activator="{ isOpen, toggle }">
-                <VListItem
-                  v-bind="menu"
-                  :class="isMini ? 'justify-center' : ''"
-                  :hide-text="isMini"
-                  :hide-append="isMini"
-                  append-icon="ri:arrow-down-s-line"
-                  :append-icon-class="isOpen ? 'rotate-180' : ''"
-                  @click="toggle"
-                >
-                  {{ menu.title }}
-                </VListItem>
-              </template>
-              <VList>
-                <VListItem
-                  v-for="child in menu.items"
-                  :key="child.title"
-                  v-bind="child"
-                  :class="isMini ? 'justify-center' : ''"
-                  :hide-text="isMini"
-                  :hide-append="isMini"
-                >
-                  <NavLink
-                    :href="route(child.to)"
-                    :active="route().current(child.to)"
+            <template v-if="!menu.role || menu.role.includes(authUser.role_id)">
+              <VListCollapse v-if="menu.items">
+                <template #activator="{ isOpen, toggle }">
+                  <VListItem
+                    v-bind="menu"
+                    :class="isMini ? 'justify-center' : ''"
+                    :hide-text="isMini"
+                    :hide-append="isMini"
+                    append-icon="ri:arrow-down-s-line"
+                    :append-icon-class="isOpen ? 'rotate-180' : ''"
+                    @click="toggle"
                   >
-                    {{ child.title }}
-                  </NavLink>
-                </VListItem>
-              </VList>
-            </VListCollapse>
-            <VListItem
-              v-else
-              v-bind="menu"
-              :class="isMini ? 'justify-center' : ''"
-              :hide-text="isMini"
-              :hide-append="isMini"
-            >
-              {{ menu.title }}
-            </VListItem>
+                    {{ menu.title }}
+                  </VListItem>
+                </template>
+                <VList>
+                  <VListItem
+                    v-for="child in menu.items"
+                    :key="child.title"
+                    v-bind="child"
+                    :class="isMini ? 'justify-center' : ''"
+                    :hide-text="isMini"
+                    :hide-append="isMini"
+                  >
+                    <NavLink
+                      :href="route(child.to)"
+                      :active="route().current(child.to)"
+                    >
+                      {{ child.title }}
+                    </NavLink>
+                  </VListItem>
+                </VList>
+              </VListCollapse>
+              <VListItem
+                v-else
+                v-bind="menu"
+                :class="isMini ? 'justify-center' : ''"
+                :hide-text="isMini"
+                :hide-append="isMini"
+              >
+                {{ menu.title }}
+              </VListItem>
+            </template>
           </template>
         </VList>
       </NavDrawer>
